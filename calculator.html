@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+
+
+<script>
+
+$(document).ready(
+    function($) {
+        $('#subm').click(
+            function() {
+                $.get('calculatevalue.php', 'currentRedeposit=' + $("#currentRedeposit").val() + '&currentQtyRedeposits=' + $("#currentQtyRedeposits").val() + '&totalCustomers=' + $("#totalCustomers").val(), 
+                    function (response, status) {
+                        console.log(status);
+                        console.log(response);
+                        $("#totalvalue").html(response.data.totalvalue);
+                        $("#cons").html(response.data.conservative);
+                        $("#real").html(response.data.realistic);
+                        $("#opt").html(response.data.optimistic);
+                        $("#lud").html(response.data.ludicrous);
+                        $("#error").html("");
+                    }
+                ).fail(function(err, status) {
+                    console.log(status);
+                    console.log(err);
+                    $("#totalvalue").html("");
+                    $("#cons").html("");
+                    $("#real").html("");
+                    $("#opt").html("");
+                    $("#lud").html("");
+                    $("#error").html("ERROR");
+                });
+            }
+        );
+    }
+);
+
+</script>
+
+</head>
+
+<body>
+
+<form method="get">
+
+currentRedeposit <input name="currentRedeposit" id="currentRedeposit" type="number" value=140> <br>
+currentQtyRedeposits <input name="currentQtyRedeposits" id="currentQtyRedeposits" type="number" value=2><br>
+totalCustomers <input name="totalCustomers" id="totalCustomers" type="number" value=10000><br>
+
+<input type="button" value="Submit" id="subm">
+
+</form>
+totalvalue: <div id="totalvalue"></div>
+cons: <div id="cons"></div>
+real: <div id="real"></div>
+opt: <div id="opt"></div>
+lud: <div id="lud"></div>
+<div id="error"></div>
+<div id="test"></div>
+</body>
+</html>
